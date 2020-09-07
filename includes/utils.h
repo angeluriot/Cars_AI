@@ -4,12 +4,13 @@
 #include "car.h"
 #include "network.h"
 #include "road.h"
+#include <cmath>
 
 extern int screen_width;
 
 #define PI 3.14159265359
 #define RESIZE ((1. / 1920.) * screen_width)
-#define TIME_STEP 0.4
+#define TIME_STEP .4
 #define GRAVITY (5. * RESIZE)
 
 #define BIRD_POSITION_X (300. * RESIZE)
@@ -35,7 +36,7 @@ extern int screen_width;
 #define LINE_MAX (20. * RESIZE)
 
 double sigmoid(const double& number);
-double random();
+double random_factor();
 double normalize(const double& number, const double& min, const double& max);
 sf::RectangleShape create_line(const double& position_1_x, const double& position_1_y, const double& position_2_x, const double& position_2_y);
 sf::CircleShape create_neuron(const double& position_x, const double& position_y);

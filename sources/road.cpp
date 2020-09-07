@@ -17,5 +17,5 @@ void Road::draw(sf::RenderWindow& window)
 
 void Road::restart()
 {
-	
+
 }

@@ -8,7 +8,7 @@ double sigmoid(const double& number)
 	return 1. / (1. + exp(-number));
 }
 
-double random()
+double random_factor()
 {
 	return (((double)rand() / (double)RAND_MAX) * 2.) - 1.;
 }

@@ -1,7 +1,7 @@
 #ifndef CAR_H
 #define CAR_H
 
-#include "utils.h"
+#include "network.h"
 
 class Car
 {

@@ -1,6 +1,8 @@
 #ifndef ROAD_H
 #define ROAD_H
 
+#include <SFML/Graphics.hpp>
+
 class Road
 {
 	public:

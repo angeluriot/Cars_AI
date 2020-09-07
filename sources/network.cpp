@@ -70,7 +70,7 @@ bool Network::is_positive(int index) const
 
 void Network::mutate(const double& score)
 {
-	double level = 1. / (double)pow(score + 1., 2);
+	double level = 1. / (double)std::pow(score + 1., 2);
 
 	for (int i = 1; i < layers.size(); i++)
 	{
