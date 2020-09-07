@@ -22,11 +22,11 @@ Neuron::Neuron(int layer_index, int previous_layer_size)
 {
 	layer = layer_index;
 	weights.clear();
-	add_value = random();
+	add_value = random_factor();
 	output = 0.;
 
 	for (int i = 0; i < previous_layer_size; i++)
-		weights.push_back(random());
+		weights.push_back(random_factor());
 }
 
 void Neuron::operator=(const Neuron& neuron)
@@ -52,7 +52,7 @@ void Neuron::mutate(const double& level)
 {
 	for (int i = 0; i < weights.size(); i++)
 	{
-		weights[i] += level * random();
+		weights[i] += level * random_factor();
 
 		if (weights[i] > 1.)
 			weights[i] = 1.;
@@ -61,5 +61,5 @@ void Neuron::mutate(const double& level)
 			weights[i] = -1.;
 	}
 
-	add_value += level * random();
+	add_value += level * random_factor();
 }
