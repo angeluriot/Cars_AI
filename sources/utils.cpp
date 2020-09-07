@@ -1,5 +1,4 @@
 #include "utils.h"
-#include "bird.h"
 #include <cmath>
 
 int screen_width;
@@ -35,7 +34,7 @@ sf::RectangleShape create_line(const double& position_1_x, const double& positio
 {
 	sf::RectangleShape line;
 	double angle = atan2(position_2_y - position_1_y, position_2_x - position_1_x);
-	
+
 	line.setFillColor(sf::Color::White);
 	line.setSize(sf::Vector2f((position_2_x - position_1_x) / cos(angle), LINE_MAX));
 	line.setOrigin(0., LINE_MAX / 2.);
@@ -45,36 +44,36 @@ sf::RectangleShape create_line(const double& position_1_x, const double& positio
 	return line;
 }
 
-void draw_network(std::vector<std::vector<sf::CircleShape>>& neurons, std::vector<std::vector<sf::RectangleShape>>& lines, const std::vector<Bird>& birds, int bird_shown)
+void draw_network(std::vector<std::vector<sf::CircleShape>>& neurons, std::vector<std::vector<sf::RectangleShape>>& lines, const std::vector<Car>& cars, int car_shown)
 {
-	for (int i = 1; i < birds[bird_shown].brain.layers.size(); i++)
+	for (int i = 1; i < cars[car_shown].brain.layers.size(); i++)
 	{
-		for (int j = 0; j < birds[bird_shown].brain.layers[i].size(); j++)
+		for (int j = 0; j < cars[car_shown].brain.layers[i].size(); j++)
 		{
-			if (birds[bird_shown].brain.layers[i][j].add_value > 0.)
+			if (cars[car_shown].brain.layers[i][j].add_value > 0.)
 				neurons[i][j].setFillColor(sf::Color::Blue);
 
 			else
 				neurons[i][j].setFillColor(sf::Color::Red);
 
-			for (int k = 0; k < birds[bird_shown].brain.layers[i][j].weights.size(); k++)
+			for (int k = 0; k < cars[car_shown].brain.layers[i][j].weights.size(); k++)
 			{
-				if (birds[bird_shown].brain.layers[i][j].weights[k] > 0.)
+				if (cars[car_shown].brain.layers[i][j].weights[k] > 0.)
 				{
-					lines[i - 1][k * birds[bird_shown].brain.layers[i].size() + j].setFillColor(sf::Color::Blue);
-					lines[i - 1][k * birds[bird_shown].brain.layers[i].size() + j].setSize(sf::Vector2f(lines[i - 1][k * birds[bird_shown].brain.layers[i].size() + j].getSize().x,
-						birds[bird_shown].brain.layers[i][j].weights[k] * LINE_MAX));
-					lines[i - 1][k * birds[bird_shown].brain.layers[i].size() + j].setOrigin(lines[i - 1][k * birds[bird_shown].brain.layers[i].size() + j].getOrigin().x,
-						lines[i - 1][k * birds[bird_shown].brain.layers[i].size() + j].getSize().y / 2.);
+					lines[i - 1][k * cars[car_shown].brain.layers[i].size() + j].setFillColor(sf::Color::Blue);
+					lines[i - 1][k * cars[car_shown].brain.layers[i].size() + j].setSize(sf::Vector2f(lines[i - 1][k * cars[car_shown].brain.layers[i].size() + j].getSize().x,
+						cars[car_shown].brain.layers[i][j].weights[k] * LINE_MAX));
+					lines[i - 1][k * cars[car_shown].brain.layers[i].size() + j].setOrigin(lines[i - 1][k * cars[car_shown].brain.layers[i].size() + j].getOrigin().x,
+						lines[i - 1][k * cars[car_shown].brain.layers[i].size() + j].getSize().y / 2.);
 				}
 
 				else
 				{
-					lines[i - 1][k * birds[bird_shown].brain.layers[i].size() + j].setFillColor(sf::Color::Red);
-					lines[i - 1][k * birds[bird_shown].brain.layers[i].size() + j].setSize(sf::Vector2f(lines[i - 1][k * birds[bird_shown].brain.layers[i].size() + j].getSize().x,
-						birds[bird_shown].brain.layers[i][j].weights[k] * LINE_MAX * -1));
-					lines[i - 1][k * birds[bird_shown].brain.layers[i].size() + j].setOrigin(lines[i - 1][k * birds[bird_shown].brain.layers[i].size() + j].getOrigin().x,
-						lines[i - 1][k * birds[bird_shown].brain.layers[i].size() + j].getSize().y / 2.);
+					lines[i - 1][k * cars[car_shown].brain.layers[i].size() + j].setFillColor(sf::Color::Red);
+					lines[i - 1][k * cars[car_shown].brain.layers[i].size() + j].setSize(sf::Vector2f(lines[i - 1][k * cars[car_shown].brain.layers[i].size() + j].getSize().x,
+						cars[car_shown].brain.layers[i][j].weights[k] * LINE_MAX * -1));
+					lines[i - 1][k * cars[car_shown].brain.layers[i].size() + j].setOrigin(lines[i - 1][k * cars[car_shown].brain.layers[i].size() + j].getOrigin().x,
+						lines[i - 1][k * cars[car_shown].brain.layers[i].size() + j].getSize().y / 2.);
 				}
 			}
 		}

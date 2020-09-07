@@ -1,6 +1,5 @@
 #include "neuron.h"
 #include "utils.h"
-#include "level.h"
 #include <iostream>
 #include <cmath>
 #include <SFML/Graphics.hpp>
@@ -44,7 +43,7 @@ int main()
 	sf::Clock clock_draw;
 	sf::Clock clock_update;
 
-	Level level(1000);
+	Road road(100);
 
 	sf::sleep(sf::seconds(3));
 
@@ -64,20 +63,20 @@ int main()
 
 		if (clock_update.getElapsedTime() > sf::milliseconds(5. * !keyboard.isKeyPressed(sf::Keyboard::Space)))
 		{
-			level.update(0);
+			road.update();
 			clock_update.restart();
 		}
 
 		if (clock_draw.getElapsedTime() > sf::milliseconds(5.))
 		{
 			window.clear(sf::Color(0, 180, 255));
-			level.draw(window);
+			road.draw(window);
 			window.display();
 			clock_draw.restart();
 		}
 
-		if (level.nb_birds == 0 or level.score == 100)
-			level.restart();
+		if (road.nb_cars == 0)
+			road.restart();
 	}
 
 	return 0;

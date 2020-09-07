@@ -1,8 +1,9 @@
 #ifndef UTILS_H
 #define UTILS_H
 #include <SFML/Graphics.hpp>
-
-class Bird;
+#include "car.h"
+#include "network.h"
+#include "road.h"
 
 extern int screen_width;
 
@@ -38,6 +39,6 @@ double random();
 double normalize(const double& number, const double& min, const double& max);
 sf::RectangleShape create_line(const double& position_1_x, const double& position_1_y, const double& position_2_x, const double& position_2_y);
 sf::CircleShape create_neuron(const double& position_x, const double& position_y);
-void draw_network(std::vector<std::vector<sf::CircleShape>>& neurons, std::vector<std::vector<sf::RectangleShape>>& lines, const std::vector<Bird>& birds, int bird_shown);
+void draw_network(std::vector<std::vector<sf::CircleShape>>& neurons, std::vector<std::vector<sf::RectangleShape>>& lines, const std::vector<Car>& birds, int bird_shown);
 
 #endif
