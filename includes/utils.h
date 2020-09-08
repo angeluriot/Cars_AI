@@ -21,6 +21,9 @@ extern int screen_width;
 #define SPAWN_POSITION Vector(0, 0)
 #define SPAWN_AREA 10.
 
+#define CAR_LENGTH 20.
+#define CAR_WIDTH 10.
+
 #define NETWORK_STRUCTURE {5, 4, 3, 2}
 #define NETWORK_POSITION_X ((1920. - 280.) * RESIZE)
 #define NETWORK_POSITION_Y ((1080. - 280.) * RESIZE)
