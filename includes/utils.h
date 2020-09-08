@@ -5,27 +5,16 @@
 #include "network.h"
 #include "road.h"
 #include <cmath>
+#include <iostream>
+#include <cmath>
+#include <array>
+#include <SFML/Graphics.hpp>
 
 extern int screen_width;
 
 #define PI 3.14159265359
 #define RESIZE ((1. / 1920.) * screen_width)
 #define TIME_STEP .4
-#define GRAVITY (5. * RESIZE)
-
-#define BIRD_POSITION_X (300. * RESIZE)
-#define BIRD_POSITION_Y (540. * RESIZE)
-#define BIRD_SIZE_X (102. * RESIZE)
-#define BIRD_SIZE_Y (72. * RESIZE)
-#define JUMP_SPEED (-30. * RESIZE)
-
-#define PIPE_SIZE_X (150. * RESIZE)
-#define PIPE_SIZE_Y (1500. * RESIZE)
-#define PIPE_GAP_X (300. * RESIZE)
-#define PIPE_GAP_Y (200. * RESIZE)
-#define PIPE_SPEED (10. * RESIZE)
-#define PIPE_ADJUSTMENT (10. * RESIZE)
-#define PIPE_RAND_LIMIT (100. * RESIZE)
 
 #define NETWORK_STRUCTURE {4, 1}
 #define NETWORK_POSITION_X ((1920. - 280.) * RESIZE)
