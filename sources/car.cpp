@@ -4,7 +4,7 @@ Car::Car()
 {
 	brain = Network(NETWORK_STRUCTURE);
 	score = 0.;
-	position;
+	position = Vector(SPAWN_POSITION.x + random_factor() * SPAWN_AREA, SPAWN_POSITION.y);
 	corners;
 	sprite;
 	alive;
