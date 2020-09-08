@@ -7,7 +7,7 @@
 #include <map>
 #include <algorithm>
 #include <functional>
-#include "utils.h"
+#include <array>
 
 #define START_POS { sf::Vector2i(100, 100), sf::Vector2i(100, 200)};
 #define FINISH_POS { sf::Vector2i(1000, 1000), sf::Vector2i(1000, 1100) };
