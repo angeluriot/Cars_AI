@@ -1,12 +1,10 @@
 #ifndef UTILS_H
 #define UTILS_H
 #include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
-#include "car.h"
+#include "vector.h"
+#include "line.h"
 #include "network.h"
+#include "car.h"
 #include "road.h"
 #include <cmath>
 #include <iostream>
@@ -20,7 +18,10 @@ extern int screen_width;
 #define RESIZE ((1. / 1920.) * screen_width)
 #define TIME_STEP .4
 
-#define NETWORK_STRUCTURE {4, 1}
+#define SPAWN_POSITION Vector(0, 0)
+#define SPAWN_AREA 10.
+
+#define NETWORK_STRUCTURE {5, 4, 3, 2}
 #define NETWORK_POSITION_X ((1920. - 280.) * RESIZE)
 #define NETWORK_POSITION_Y ((1080. - 280.) * RESIZE)
 #define NETWORK_SIZE_X (200. * RESIZE)
