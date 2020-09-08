@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cmath>
 #include <SFML/Graphics.hpp>
+#include <array>
 
 /*
 ** Boucle principale du programme
@@ -13,7 +14,7 @@ void start_loop(sf::RenderWindow& window)
 	sf::Clock clock_draw;
 	sf::Clock clock_update;
 
-	Road road(100);
+	Road road;
 
 	while (window.isOpen())
 	{
@@ -64,6 +65,7 @@ std::array<unsigned int, 2> get_resolution()
 		unsigned int width = (sf::VideoMode::getDesktopMode().width * 3) / 4;
 		return { width, width * 9 / 16 };
 	}
+
 	return { sf::VideoMode::getDesktopMode().width * 3 / 4, sf::VideoMode::getDesktopMode().height * 3 / 4 };
 }
 

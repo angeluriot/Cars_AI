@@ -1,6 +1,10 @@
 #ifndef UTILS_H
 #define UTILS_H
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/Audio.hpp>
+#include <SFML/Network.hpp>
 #include "car.h"
 #include "network.h"
 #include "road.h"
@@ -41,5 +45,6 @@ double normalize(const double& number, const double& min, const double& max);
 sf::RectangleShape create_line(const double& position_1_x, const double& position_1_y, const double& position_2_x, const double& position_2_y);
 sf::CircleShape create_neuron(const double& position_x, const double& position_y);
 void draw_network(std::vector<std::vector<sf::CircleShape>>& neurons, std::vector<std::vector<sf::RectangleShape>>& lines, const std::vector<Car>& birds, int bird_shown);
+double distanceSq(const sf::Vector2i& a, const sf::Vector2i& b);
 
 #endif
