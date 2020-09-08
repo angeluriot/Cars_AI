@@ -83,27 +83,6 @@ void Road::update_learning(sf::RenderWindow& window)
 
 }
 
-void Road::draw_learning(sf::RenderWindow& window)
-{
-
-}
-
-void Road::draw_drawing(sf::RenderWindow& window)
-{
-	sf::RectangleShape rs;
-	rs.setFillColor(sf::Color::White);
-
-	sf::Vector2i mouse = sf::Mouse::getPosition();
-
-	for (auto wall : wall_points)
-	{
-		for (int i = 1; i < wall.size(); i++)
-		{
-			window.draw(rs);
-		}
-	}
-}
-
 /*
 **	Lance la fonction d'update correspondant à state
 */
@@ -116,9 +95,7 @@ void Road::update(sf::RenderWindow& window)
 
 void Road::draw(sf::RenderWindow& window)
 {
-	std::map<RoadState, void (Road::*)(sf::RenderWindow&)> funcs { {DRAWING, &Road::draw_drawing}, {LEARNING, &Road::draw_learning} };
-	auto pair = funcs.find(state);
-	std::invoke(pair->second, *this, window);
+
 }
 
 void Road::restart()

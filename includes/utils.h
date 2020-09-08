@@ -34,6 +34,6 @@ double normalize(const double& number, const double& min, const double& max);
 sf::RectangleShape create_line(const double& position_1_x, const double& position_1_y, const double& position_2_x, const double& position_2_y);
 sf::CircleShape create_neuron(const double& position_x, const double& position_y);
 void draw_network(std::vector<std::vector<sf::CircleShape>>& neurons, std::vector<std::vector<sf::RectangleShape>>& lines, const std::vector<Car>& birds, int bird_shown);
-double distanceSq(const sf::Vector2i& a, const sf::Vector2i& b);
+double distanceSq(const sf::Vector2f& a, const sf::Vector2f& b);
 
 #endif
