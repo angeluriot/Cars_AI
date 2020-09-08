@@ -1,6 +1,4 @@
-#include "neuron.h"
 #include "utils.h"
-#include "network.h"
 
 Neuron::Neuron()
 {

@@ -1,9 +1,4 @@
-#include "neuron.h"
 #include "utils.h"
-#include <iostream>
-#include <cmath>
-#include <SFML/Graphics.hpp>
-#include <array>
 
 /*
 ** Boucle principale du programme

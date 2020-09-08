@@ -1,5 +1,4 @@
 #include "utils.h"
-#include <cmath>
 
 int screen_width;
 
