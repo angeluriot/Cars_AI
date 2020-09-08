@@ -1,7 +1,5 @@
 #ifndef CAR_H
 #define CAR_H
-#include "network.h"
-#include "vector.h"
 #include <array>
 
 class Car
