@@ -27,7 +27,7 @@ void start_loop(sf::RenderWindow& window)
 
 		if (clock_update.getElapsedTime() > sf::milliseconds(5. * !keyboard.isKeyPressed(sf::Keyboard::Space)))
 		{
-			road.update();
+			road.update(window);
 			clock_update.restart();
 		}
 
