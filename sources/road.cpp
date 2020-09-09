@@ -14,15 +14,12 @@ Road::Road(sf::RenderWindow& window, int nb_cars, std::string filename)
 	std::ifstream file;
 	file.open(filename);
 
-	if (!file.is_open())
+	if (!file)
 		return ;
 
 	this->state = LEARNING;
-	if (!parse_points(file))
-	{
-		// Gestion d'erreur
-		std::exit(1);
-	}
+	this->wall = 2;
+	parse_points(file);
 }
 
 /*
@@ -37,28 +34,20 @@ bool Road::parse_points(std::ifstream& file)
 
 	for (int wall = 0; !file.eof() && wall < 2; wall++)
 	{
-		if (!std::getline(file, line))
-		{
-			for (auto wall : wall_points)
-				wall.clear();
-			return false;
-		}
+		std::getline(file, line);
 
-		for (int i = 0; line[i]; i++)
+		int i = 0;
+		while (i < line.size() && line[i] != '\n')
 		{
-			std::array<int, 2> coords;
+			std::array<float, 2> coords;
 
 			for (int j = 0; j < coords.size(); j++)
 			{
-				if (!std::isdigit(line[i]))
-				{
-					for (auto wall : wall_points)
-						wall.clear();
-					return false;
-				}
-
-				coords[j] = std::stof(line.substr(i, line.size()));
-				i += line.substr(i, line.size()).size() + 1;
+				coords[j] = std::stof(line.substr(i));
+				while (line[i] != ' ' && line[i])
+					i++;
+				if (line[i] == ' ')
+					i++;
 			}
 
 			wall_points[wall].push_back(sf::Vector2f(coords[0], coords[1]));
@@ -85,7 +74,10 @@ void Road::update_drawing(sf::RenderWindow& window)
 		pressed = false;
 
 	if (wall == 2)
+	{
+		export_race("./race.road");
 		state = LEARNING;
+	}
 }
 
 void Road::update_learning(sf::RenderWindow& window)
@@ -156,11 +148,8 @@ bool Road::export_race(std::string filename)
 	file.open(filename, std::fstream::out | std::fstream::trunc);
 	for (auto wall : wall_points)
 	{
-		for (auto vec : wall)
-		{
-			std::ostringstream ss;
-			file << vec.x << ' ' << vec.y;
-		}
+		for (int i = 0; i < wall.size(); i++)
+			file << wall[i].x << ' ' << wall[i].y << (i == wall.size() - 1 ? "" : " ");
 		file << '\n';
 	}
 	file.close();

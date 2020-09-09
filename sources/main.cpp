@@ -13,7 +13,7 @@ void start_loop(sf::RenderWindow& window)
 	view.zoom(2);
 	window.setView(view);
 
-	Road road(window);
+	Road road(window, 100);
 
 	while (window.isOpen())
 	{
