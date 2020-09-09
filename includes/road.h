@@ -31,6 +31,7 @@ class Road
 		void draw(sf::RenderWindow& window);
 		void restart();
 		bool parse_points(std::ifstream& file);
+		bool export_race(std::string filename);
 
 	private:
 		int wall = 0;

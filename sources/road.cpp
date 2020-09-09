@@ -8,8 +8,8 @@ Road::Road(sf::RenderWindow& window, int nb_cars, std::string filename)
 	this->nb_cars = nb_cars;
 	this->wall = 0;
 	this->state = DRAWING;
-	this->start = START_POS;
-	this->finish = FINISH_POS;
+	this->start = { window.mapPixelToCoords(START_POINT_1), window.mapPixelToCoords(START_POINT_2) };
+	this->finish = { window.mapPixelToCoords(FINISH_POINT_1), window.mapPixelToCoords(FINISH_POINT_2) };
 
 	std::ifstream file;
 	file.open(filename);
@@ -64,6 +64,7 @@ bool Road::parse_points(std::ifstream& file)
 			wall_points[wall].push_back(sf::Vector2f(coords[0], coords[1]));
 		}
 	}
+	file.close();
 	return true;
 }
 
@@ -143,4 +144,25 @@ void Road::draw(sf::RenderWindow& window)
 void Road::restart()
 {
 
+}
+
+bool Road::export_race(std::string filename)
+{
+	std::fstream file;
+	file.open(filename, std::fstream::in | std::fstream::out);
+
+	if (file)
+		return false;
+	file.open(filename, std::fstream::out | std::fstream::trunc);
+	for (auto wall : wall_points)
+	{
+		for (auto vec : wall)
+		{
+			std::ostringstream ss;
+			file << vec.x << ' ' << vec.y;
+		}
+		file << '\n';
+	}
+	file.close();
+	return true;
 }
