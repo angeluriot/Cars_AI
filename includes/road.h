@@ -22,10 +22,10 @@ class Road
 		RoadState state;
 		// les vecteurs contiennent les coordonnées des points des murs, array[0] = mur_1, array[1] = mur_2
 		std::array<std::vector<sf::Vector2f>, 2> wall_points;
-		std::array<sf::Vector2f, 2> start = START_POS;
-		std::array<sf::Vector2f, 2> finish = FINISH_POS;
+		std::array<sf::Vector2f, 2> start;
+		std::array<sf::Vector2f, 2> finish;
 
-		Road(int nb_cars = 100, std::string filename = "");
+		Road(sf::RenderWindow& window, int nb_cars = 100, std::string filename = "");
 
 		void update(sf::RenderWindow& window);
 		void draw(sf::RenderWindow& window);

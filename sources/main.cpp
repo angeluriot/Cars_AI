@@ -9,7 +9,11 @@ void start_loop(sf::RenderWindow& window)
 	sf::Clock clock_draw;
 	sf::Clock clock_update;
 
-	Road road;
+	sf::View view = window.getView();
+	view.zoom(2);
+	window.setView(view);
+
+	Road road(window);
 
 	while (window.isOpen())
 	{
@@ -19,9 +23,9 @@ void start_loop(sf::RenderWindow& window)
 		{
 			switch (sf_event.type)
 			{
-			case sf::Event::Closed:
-				window.close();
-				break;
+				case sf::Event::Closed:
+					window.close();
+					break;
 			}
 		}
 
@@ -33,7 +37,7 @@ void start_loop(sf::RenderWindow& window)
 
 		if (clock_draw.getElapsedTime() > sf::milliseconds(5.))
 		{
-			window.clear(sf::Color::Black);
+			window.clear(sf::Color::White);
 			road.draw(window);
 			window.display();
 			clock_draw.restart();
