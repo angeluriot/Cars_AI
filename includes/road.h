@@ -9,7 +9,7 @@
 #include <functional>
 #include <array>
 
-#define START_POS { sf::Vector2f(100, 100), sf::Vector2f(100, 200)};
+#define START_POS { sf::Vector2f(-500, -300), sf::Vector2f(-500, -200)};
 #define FINISH_POS { sf::Vector2f(1000, 1000), sf::Vector2f(1000, 1100) };
 #define FINISH_CURSOR_TRIGGER 60
 
@@ -29,7 +29,7 @@ class Road
 		std::array<sf::Vector2f, 2> start = START_POS;
 		std::array<sf::Vector2f, 2> finish = FINISH_POS;
 
-		Road(int nb_cars = 100, std::string filename = "");
+		Road(sf::RenderWindow& window, int nb_cars = 100, std::string filename = "");
 
 		void update(sf::RenderWindow& window);
 		void draw(sf::RenderWindow& window);

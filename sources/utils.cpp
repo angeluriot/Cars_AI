@@ -17,7 +17,7 @@ double normalize(const double& number, const double& min, const double& max)
 	return sigmoid(((number - min) / (max - min)) * 8. - 4.);
 }
 
-double distanceSq(const sf::Vector2f& a, const sf::Vector2f& b)
+double distanceSq(const sf::Vector2i& a, const sf::Vector2i& b)
 {
 	double distX = a.x - b.x;
 	double distY = a.y - b.y;
