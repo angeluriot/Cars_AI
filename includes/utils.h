@@ -4,8 +4,8 @@
 #include "vector.h"
 #include "line.h"
 #include "network.h"
-#include "car.h"
 #include "road.h"
+#include "car.h"
 #include <cmath>
 #include <iostream>
 #include <cmath>
@@ -34,7 +34,15 @@ extern int screen_width;
 #define CAR_LENGTH 20.
 #define CAR_WIDTH 10.
 #define CAR_COLOR sf::Color(50, 50, 200)
+#define DEAD_CAR_COLOR sf::Color(150, 150, 255)
 #define TURN_RADIUS 0.05
+#define MAX_BOOST 0.1
+#define MAX_SPEED 50
+
+#define LASER_WIDTH 3
+#define LASER_COLOR sf::Color(255, 150, 150)
+
+#define VIEW_MAX 500.
 
 #define NETWORK_STRUCTURE { 5, 4, 3, 2 }
 #define NETWORK_POSITION_X ((1920. - 280.) * RESIZE)
@@ -51,5 +59,7 @@ sf::RectangleShape create_line(const double& position_1_x, const double& positio
 sf::CircleShape create_neuron(const double& position_x, const double& position_y);
 void draw_network(std::vector<std::vector<sf::CircleShape>>& neurons, std::vector<std::vector<sf::RectangleShape>>& lines, const std::vector<Car>& birds, int bird_shown);
 double distanceSq(const sf::Vector2i& a, const sf::Vector2i& b);
+bool intersection(const Vector& point_1, const Vector& point_2, const Vector& point_3, const Vector& point_4, Vector& intersection);
+bool is_on_line(const Vector& point, const Vector& point_1, const Vector& point_2, const double& precision);
 
 #endif

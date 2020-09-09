@@ -67,6 +67,11 @@ bool Network::is_positive(int index) const
 	return (layers.back()[index].output >= 0.5);
 }
 
+double Network::get_output(int index) const
+{
+	return layers.back()[index].output;
+}
+
 void Network::mutate(const double& score)
 {
 	double level = 1. / (double)std::pow(score + 1., 2);

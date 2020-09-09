@@ -76,7 +76,7 @@ void Vector::operator/=(const double& number)
 
 // Donne la norme du vecteur
 
-double Vector::get_radius() const
+double Vector::get_norm() const
 {
 	return sqrt(x * x + y * y);
 }
@@ -94,11 +94,11 @@ double Vector::get_angle() const
 
 // Modifie la norme du vecteur
 
-void Vector::set_radius(const double& radius)
+void Vector::set_norm(const double& norm)
 {
 	normalize(*this);
 
-	*this *= radius;
+	*this *= norm;
 }
 
 
@@ -107,7 +107,7 @@ void Vector::set_radius(const double& radius)
 
 void Vector::set_angle(const double& angle)
 {
-	*this = Vector_polar(get_radius(), angle);
+	*this = Vector_polar(get_norm(), angle);
 }
 
 
@@ -123,9 +123,9 @@ Vector Vector_cartesian(const double& x, const double& y)
 
 // Construit un vecteur à partir de ses coordonnées polaires
 
-Vector Vector_polar(const double& radius, const double& angle)
+Vector Vector_polar(const double& norm, const double& angle)
 {
-	return Vector(get_x(radius, angle), get_y(radius, angle));
+	return Vector(get_x(norm, angle), get_y(norm, angle));
 }
 
 
@@ -196,18 +196,18 @@ bool operator!=(const Vector& vector_1, const Vector& vector_2)
 
 // Donne la valeur cartésienne x à partir des coordonnées polaires (en mètres)
 
-double get_x(const double& radius, const double& angle)
+double get_x(const double& norm, const double& angle)
 {
-	return cos(angle) * radius;
+	return cos(angle) * norm;
 }
 
 
 
 // Donne la valeur cartésienne y à partir des coordonnées polaires (en mètres)
 
-double get_y(const double& radius, const double& angle)
+double get_y(const double& norm, const double& angle)
 {
-	return sin(angle) * radius;
+	return sin(angle) * norm;
 }
 
 
@@ -216,7 +216,7 @@ double get_y(const double& radius, const double& angle)
 
 double get_distance(const Vector& point_1, const Vector& point_2)
 {
-	return (point_2 - point_1).get_radius();
+	return (point_2 - point_1).get_norm();
 }
 
 
@@ -234,7 +234,7 @@ double get_angle(const Vector& point_1, const Vector& point_2)
 
 Vector normalize(const Vector& vector)
 {
-	return vector / vector.get_radius();
+	return vector / vector.get_norm();
 }
 
 sf::Vector2f to_vector2f(const Vector& vector)

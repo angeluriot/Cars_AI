@@ -30,14 +30,16 @@ class Line
 		void set_point2(const sf::Vector2i& point_2);
 		void set_point2(const sf::Vector2f& point_2);
 
-		Vector get_point1();
-		Vector get_point2();
+		Vector get_point1() const;
+		Vector get_point2() const;
 
 		void set_width(const double& width);
-		double get_width();
+		double get_width() const;
 
 		void set_color(const sf::Color& color);
-		sf::Color get_color();
+		sf::Color get_color() const;
+
+		double get_length();
 
 		void draw(sf::RenderWindow& window);
 };

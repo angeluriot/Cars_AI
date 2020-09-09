@@ -35,19 +35,19 @@ public:
 
 	// Récupérer
 
-	double	get_radius() const;
+	double	get_norm() const;
 	double	get_angle() const;
 
 	// Modifier
 
-	void	set_radius(const double& radius);
+	void	set_norm(const double& norm);
 	void	set_angle(const double& angle);
 };
 
 // Constructeurs
 
 Vector	Vector_cartesian(const double& x, const double& y);
-Vector	Vector_polar(const double& radius, const double& angle);
+Vector	Vector_polar(const double& norm, const double& angle);
 
 // Opérateurs
 
@@ -62,8 +62,8 @@ bool	operator!=(const Vector& vector_1, const Vector& vector_2);
 
 // Récupérer
 
-double	get_x(const double& radius, const double& angle);
-double	get_y(const double& radius, const double& angle);
+double	get_x(const double& norm, const double& angle);
+double	get_y(const double& norm, const double& angle);
 double	get_distance(const Vector& point_1, const Vector& point_2);
 double	get_angle(const Vector& point_1, const Vector& point_2);
 

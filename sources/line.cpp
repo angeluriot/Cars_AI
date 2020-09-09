@@ -97,12 +97,12 @@ void Line::set_point2(const sf::Vector2f& point_2)
 	set_point2(Vector(point_2.x, point_2.y));
 }
 
-Vector Line::get_point1()
+Vector Line::get_point1() const
 {
 	return Vector(left.getPosition().x, left.getPosition().y);
 }
 
-Vector Line::get_point2()
+Vector Line::get_point2() const
 {
 	return Vector(right.getPosition().x, right.getPosition().y);
 }
@@ -114,9 +114,9 @@ void Line::set_width(const double& width)
 	right.setRadius(width / 2.);
 }
 
-double Line::get_width()
+double Line::get_width() const
 {
-	return left.getRadius() * 2.;
+	return rectangle.getSize().y;
 }
 
 void Line::set_color(const sf::Color& color)
@@ -126,9 +126,14 @@ void Line::set_color(const sf::Color& color)
 	right.setFillColor(color);
 }
 
-sf::Color Line::get_color()
+sf::Color Line::get_color() const
 {
 	return rectangle.getFillColor();
+}
+
+double Line::get_length()
+{
+	return rectangle.getSize().x;
 }
 
 void Line::draw(sf::RenderWindow& window)

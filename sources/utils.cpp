@@ -17,13 +17,6 @@ double normalize(const double& number, const double& min, const double& max)
 	return sigmoid(((number - min) / (max - min)) * 8. - 4.);
 }
 
-double distanceSq(const sf::Vector2i& a, const sf::Vector2i& b)
-{
-	double distX = a.x - b.x;
-	double distY = a.y - b.y;
-	return (distX * distX + distY * distY);
-}
-
 sf::CircleShape create_neuron(const double& position_x, const double& position_y)
 {
 	sf::CircleShape neuron;
@@ -84,4 +77,66 @@ void draw_network(std::vector<std::vector<sf::CircleShape>>& neurons, std::vecto
 			}
 		}
 	}
+}
+
+double distanceSq(const sf::Vector2i& a, const sf::Vector2i& b)
+{
+	double distX = a.x - b.x;
+	double distY = a.y - b.y;
+	return (distX * distX + distY * distY);
+}
+
+bool intersection(const Vector& point_1, const Vector& point_2, const Vector& point_3, const Vector& point_4, Vector& intersection)
+{
+	if (point_1 == point_2 || point_3 == point_4)
+		return false;
+
+	if (point_1.x != point_2.x && point_3.x != point_4.x)
+	{
+		double a_1 = (point_2.y - point_1.y) / (point_2.x - point_1.x);
+		double a_2 = (point_4.y - point_3.y) / (point_4.x - point_3.x);
+
+		if (a_1 == a_2)
+			return false;
+
+		double b_1 = point_1.y - a_1 * point_1.x;
+		double b_2 = point_3.y - a_2 * point_3.x;
+
+		intersection.x = (b_2 - b_1) / (a_1 - a_2);
+		intersection.y = a_1 * intersection.x + b_1;
+
+		if (std::min(point_1.x, point_2.x) < intersection.x && std::max(point_1.x, point_2.x) > intersection.x && std::min(point_3.x, point_4.x) < intersection.x && std::max(point_3.x, point_4.x) > intersection.x)
+			return true;
+	}
+
+	else if (point_1.x != point_2.x)
+	{
+		double a_1 = (point_2.y - point_1.y) / (point_2.x - point_1.x);
+		double b_1 = point_1.y - a_1 * point_1.x;
+
+		intersection.x = point_3.x;
+		intersection.y = a_1 * intersection.x + b_1;
+
+		if (std::min(point_1.x, point_2.x) < intersection.x && std::max(point_1.x, point_2.x) > intersection.x && std::min(point_3.y, point_4.y) < intersection.y && std::max(point_3.y, point_4.y) > intersection.y)
+			return true;
+	}
+
+	else if (point_3.x != point_4.x)
+	{
+		double a_2 = (point_4.y - point_3.y) / (point_4.x - point_3.x);
+		double b_2 = point_3.y - a_2 * point_3.x;
+
+		intersection.x = point_1.x;
+		intersection.y = a_2 * intersection.x + b_2;
+
+		if (std::min(point_1.y, point_2.y) < intersection.y && std::max(point_1.y, point_2.y) > intersection.y && std::min(point_3.x, point_4.x) < intersection.x && std::max(point_3.x, point_4.x) > intersection.x)
+			return true;
+	}
+
+	return false;
+}
+
+bool is_on_line(const Vector& point, const Vector& point_1, const Vector& point_2, const double& precision)
+{
+	return ;
 }
