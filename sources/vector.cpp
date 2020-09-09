@@ -20,6 +20,18 @@ Vector::Vector(const Vector& vector)
 	y = vector.y;
 }
 
+Vector::Vector(const sf::Vector2f& vector)
+{
+	x = vector.x;
+	y = vector.y;
+}
+
+Vector::Vector(const sf::Vector2i& vector)
+{
+	x = vector.x;
+	y = vector.y;
+}
+
 
 
 // Construit un vecteur à partir de ses coordonnées cartésiennes
@@ -223,4 +235,14 @@ double get_angle(const Vector& point_1, const Vector& point_2)
 Vector normalize(const Vector& vector)
 {
 	return vector / vector.get_radius();
+}
+
+sf::Vector2f to_vector2f(const Vector& vector)
+{
+	return sf::Vector2f(vector.x, vector.y);
+}
+
+sf::Vector2i to_vector2i(const Vector& vector)
+{
+	return sf::Vector2i(vector.x, vector.y);
 }

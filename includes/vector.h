@@ -1,6 +1,7 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 #include <cmath>
+#include <SFML/Graphics.hpp>
 
 #define PI 3.14159265359 // Pi
 
@@ -20,6 +21,8 @@ public:
 
 	Vector();
 	Vector(const Vector& vector);
+	Vector(const sf::Vector2f& vector);
+	Vector(const sf::Vector2i& vector);
 	Vector(const double& x, const double& y);
 
 	// Assignations
@@ -67,5 +70,7 @@ double	get_angle(const Vector& point_1, const Vector& point_2);
 // Autres fonctions
 
 Vector	normalize(const Vector& vector);
+sf::Vector2f to_vector2f(const Vector& vector);
+sf::Vector2i to_vector2i(const Vector& vector);
 
 #endif

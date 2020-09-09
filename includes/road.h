@@ -9,10 +9,6 @@
 #include <functional>
 #include <array>
 
-#define START_POS { sf::Vector2f(100, 100), sf::Vector2f(100, 200)};
-#define FINISH_POS { sf::Vector2f(1000, 1000), sf::Vector2f(1000, 1100) };
-#define FINISH_CURSOR_TRIGGER 60
-
 enum RoadState
 {
 	DRAWING,
