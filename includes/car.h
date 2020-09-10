@@ -28,6 +28,7 @@ class Car
 		void update_sprite();
 		void update_lasers(const Road& road);
 		void update_alive(const Road& road);
+		void update_finish(const Road& road);
 		std::vector<double> look();
 		std::vector<double> think(const std::vector<double>& view);
 		void move(const std::vector<double>& thought);

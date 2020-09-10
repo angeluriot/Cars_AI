@@ -27,6 +27,7 @@ Car::Car(const Road& road)
 	update_lasers(road);
 
 	alive = true;
+	finish = false;
 }
 
 Car::Car(const Car& car)
@@ -47,6 +48,7 @@ void Car::operator=(const Car& car)
 	lasers = car.lasers;
 	lasers_sprites = car.lasers_sprites;
 	alive = car.alive;
+	finish = car.finish;
 }
 
 void Car::update_corners()
@@ -61,7 +63,6 @@ void Car::update_corners()
 
 void Car::update_sprite()
 {
-	sprite.setFillColor(alive ? CAR_COLOR : DEAD_CAR_COLOR);
 	sprite.setPosition(to_vector2f(position));
 	sprite.setRotation(rotation * (180. / PI));
 }
@@ -81,7 +82,7 @@ void Car::update_lasers(const Road& road)
 		Vector laser_end;
 		Vector min_laser_end = lasers[i];
 
-		for (int k = 0; k < road.wall_points.size() - 1; k++)
+		for (int k = 0; k < road.wall_points.size(); k++)
 		{
 			if (intersection(position, position + lasers[i], road.start[k], road.wall_points[k][0], laser_end) && laser_end.get_norm() < min_laser_end.get_norm())
 				min_laser_end = laser_end;
@@ -100,7 +101,49 @@ void Car::update_lasers(const Road& road)
 
 void Car::update_alive(const Road& road)
 {
+	for (auto corner : corners)
+	{
+		for (int k = 0; k < road.wall_points.size(); k++)
+		{
+			if (distance_to_line(corner, road.start[k], road.wall_points[k][0]) < MAX_MOVE)
+			{
+				finish = true;
+				break;
+			}
 
+			for (int j = 0; j < road.wall_points[k].size() - 1; j++)
+				if (distance_to_line(corner, road.wall_points[k][j], road.wall_points[k][j + 1]) < MAX_MOVE)
+				{
+					alive = false;
+					break;
+				}
+
+			if (!alive)
+				break;
+
+			if (distance_to_line(corner, road.wall_points[k].back(), road.finish[k]) < MAX_MOVE)
+			{
+				alive = false;
+				break;
+			}
+		}
+
+		if (!alive)
+			break;
+	}
+
+	if (!alive)
+		sprite.setFillColor(DEAD_CAR_COLOR);
+}
+
+void Car::update_finish(const Road& road)
+{
+	for (auto corner : corners)
+		if (distance_to_line(corner, road.finish[0], road.finish[1]) < MAX_MOVE)
+		{
+			finish = true;
+			break;
+		}
 }
 
 std::vector<double> Car::look()
@@ -129,23 +172,31 @@ void Car::move(const std::vector<double>& thought)
 
 void Car::update(const Road& road)
 {
-	move(think(look()));
+	if (alive && !finish)
+	{
+		move(think(look()));
 
-	position += speed * TIME_STEP;
-	time += TIME_STEP;
-	distance += speed.get_norm() * TIME_STEP;
+		position += speed * TIME_STEP;
+		time += TIME_STEP;
+		distance += speed.get_norm() * TIME_STEP;
 
-	update_corners();
-	update_lasers(road);
-	update_sprite();
-	update_alive(road);
+		update_corners();
+		update_lasers(road);
+		update_sprite();
+		update_alive(road);
+		update_finish(road);
+	}
 }
 
 double Car::get_score()
 {
-	return 0.0;
+	return (finish ? normalize(time, 0., 30.) / 2. + 0.5 : normalize(distance, 0., 2000.) / 2.);
 }
 
 void Car::recreate_from(const Car& car)
 {
+	double score = get_score();
+	*this = car;
+
+	brain.mutate(score);
 }

@@ -136,7 +136,7 @@ bool intersection(const Vector& point_1, const Vector& point_2, const Vector& po
 	return false;
 }
 
-bool is_on_line(const Vector& point, const Vector& point_1, const Vector& point_2, const double& precision)
+bool distance_to_line(const Vector& point, const Vector& point_1, const Vector& point_2)
 {
-	return ;
+	return abs((point_2.y - point_1.y) * point.x - (point_2.x - point_1.x) * point.y + point_2.x * point_1.y - point_2.y * point_1.x) / sqrt(pow(point_2.y - point_1.y, 2) + pow(point_2.x - point_1.x, 2));
 }
