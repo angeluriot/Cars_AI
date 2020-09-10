@@ -101,7 +101,7 @@ void Car::update_lasers(const Road& road)
 
 void Car::update_alive(const Road& road)
 {
-	for (auto corner : corners)
+	for (auto& corner : corners)
 	{
 		for (int k = 0; k < road.wall_points.size(); k++)
 		{
@@ -138,7 +138,7 @@ void Car::update_alive(const Road& road)
 
 void Car::update_finish(const Road& road)
 {
-	for (auto corner : corners)
+	for (auto& corner : corners)
 		if (distance_to_line(corner, road.finish[0], road.finish[1]) < MAX_MOVE)
 		{
 			finish = true;
