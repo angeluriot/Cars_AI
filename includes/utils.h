@@ -6,6 +6,7 @@
 #include "network.h"
 #include "car.h"
 #include "road.h"
+#include "simulation.h"
 #include <cmath>
 #include <iostream>
 #include <cmath>

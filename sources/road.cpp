@@ -74,10 +74,7 @@ void Road::update_drawing(sf::RenderWindow& window)
 		pressed = false;
 
 	if (wall == 2)
-	{
-		export_race("./race.road");
 		state = LEARNING;
-	}
 }
 
 void Road::update_learning(sf::RenderWindow& window)

@@ -13,7 +13,7 @@ void start_loop(sf::RenderWindow& window)
 	view.zoom(2);
 	window.setView(view);
 
-	Road road(window, 100);
+	Simulation simulation(window, 100, 1);
 
 	while (window.isOpen())
 	{
@@ -31,20 +31,17 @@ void start_loop(sf::RenderWindow& window)
 
 		if (clock_update.getElapsedTime() > sf::milliseconds(5. * !keyboard.isKeyPressed(sf::Keyboard::Space)))
 		{
-			road.update(window);
+			simulation.update(window);
 			clock_update.restart();
 		}
 
 		if (clock_draw.getElapsedTime() > sf::milliseconds(5.))
 		{
 			window.clear(sf::Color::White);
-			road.draw(window);
+			simulation.draw(window);
 			window.display();
 			clock_draw.restart();
 		}
-
-		if (road.nb_cars == 0)
-			road.restart();
 	}
 }
 
