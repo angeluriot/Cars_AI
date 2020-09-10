@@ -6,11 +6,13 @@
 #include "network.h"
 #include "road.h"
 #include "car.h"
+#include "simulation.h"
 #include <cmath>
 #include <iostream>
 #include <cmath>
 #include <array>
 #include <SFML/Graphics.hpp>
+#include <sstream>
 
 extern int screen_width;
 
@@ -18,11 +20,11 @@ extern int screen_width;
 #define RESIZE ((1. / 1920.) * screen_width)
 #define TIME_STEP (1./ 60.)
 
-#define START_POINT_1 sf::Vector2f(-500, -300)
-#define START_POINT_2 sf::Vector2f(-500, -200)
+#define START_POINT_1 sf::Vector2i(100. * RESIZE, 100. * RESIZE)
+#define START_POINT_2 sf::Vector2i(100. * RESIZE, 200. * RESIZE)
 
-#define FINISH_POINT_1 sf::Vector2f(1000, 1000)
-#define FINISH_POINT_2 sf::Vector2f(1000, 1100)
+#define FINISH_POINT_1 sf::Vector2i((1920. - 100.) * RESIZE, (1080. - 200.) * RESIZE)
+#define FINISH_POINT_2 sf::Vector2i((1920. - 100.) * RESIZE, (1080. - 100.) * RESIZE)
 
 #define START_POS { START_POINT_1, START_POINT_2};
 #define FINISH_POS { FINISH_POINT_1, FINISH_POINT_2 };
