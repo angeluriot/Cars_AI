@@ -40,7 +40,7 @@ extern int screen_width;
 #define TURN_RADIUS 0.05
 #define MAX_BOOST 3.
 #define MAX_SPEED 50.
-#define MAX_MOVE (MAX_SPEED * TIME_STEP)
+#define MAX_MOVE 1.
 
 #define LASER_WIDTH 3
 #define LASER_COLOR sf::Color(255, 150, 150)
