@@ -15,7 +15,7 @@ Line::Line(const Vector& point_1, const Vector& point_2, const double& width, co
 	rectangle.setSize(sf::Vector2f(get_distance(point_1, point_2), width));
 	rectangle.setOrigin(0., width / 2.);
 	rectangle.setPosition(point_1.x, point_1.y);
-	rectangle.setRotation(get_angle(point_1, point_2) * (180. / PI));
+	rectangle.setRotation(to_deg(get_angle(point_1, point_2)));
 
 	left.setFillColor(color);
 	left.setRadius(width / 2.);
@@ -54,7 +54,7 @@ void Line::set_point1(const Vector& point_1)
 {
 	rectangle.setSize(sf::Vector2f(get_distance(point_1, get_point2()), get_width()));
 	rectangle.setPosition(point_1.x, point_1.y);
-	rectangle.setRotation(get_angle(point_1, get_point2()) * (180. / PI));
+	rectangle.setRotation(to_deg(get_angle(point_1, get_point2())));
 
 	left.setPosition(point_1.x, point_1.y);
 }
@@ -77,7 +77,7 @@ void Line::set_point1(const sf::Vector2f& point_1)
 void Line::set_point2(const Vector& point_2)
 {
 	rectangle.setSize(sf::Vector2f(get_distance(get_point1(), point_2), get_width()));
-	rectangle.setRotation(get_angle(get_point1(), point_2) * (180. / PI));
+	rectangle.setRotation(to_deg(get_angle(get_point1(), point_2)));
 
 	right.setPosition(point_2.x, point_2.y);
 }

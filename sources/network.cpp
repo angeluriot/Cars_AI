@@ -67,6 +67,16 @@ bool Network::is_positive(int index) const
 	return (layers.back()[index].output >= 0.5);
 }
 
+std::vector<double> Network::get_outputs() const
+{
+	std::vector<double> v;
+
+	for (const auto& out : layers.back())
+		v.push_back(out.output);
+
+	return v;
+}
+
 double Network::get_output(int index) const
 {
 	return layers.back()[index].output;

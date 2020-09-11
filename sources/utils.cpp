@@ -38,7 +38,7 @@ sf::RectangleShape create_line(const double& position_1_x, const double& positio
 	line.setSize(sf::Vector2f((position_2_x - position_1_x) / cos(angle), LINE_MAX));
 	line.setOrigin(0., LINE_MAX / 2.);
 	line.setPosition(position_1_x, position_1_y);
-	line.setRotation(angle * (180. / PI));
+	line.setRotation(to_deg(angle));
 
 	return line;
 }
@@ -139,4 +139,14 @@ bool intersection(const Vector& point_1, const Vector& point_2, const Vector& po
 bool distance_to_line(const Vector& point, const Vector& point_1, const Vector& point_2)
 {
 	return abs((point_2.y - point_1.y) * point.x - (point_2.x - point_1.x) * point.y + point_2.x * point_1.y - point_2.y * point_1.x) / sqrt(pow(point_2.y - point_1.y, 2) + pow(point_2.x - point_1.x, 2));
+}
+
+double to_deg(const double& angle)
+{
+	return angle * (180. / PI);
+}
+
+double to_rad(const double& angle)
+{
+	return angle * (PI / 180.);
 }

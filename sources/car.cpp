@@ -4,7 +4,7 @@ Car::Car(const Road& road)
 {
 	brain = Network(NETWORK_STRUCTURE);
 	position = Vector(SPAWN_POSITION + random_factor() * SPAWN_AREA);
-	speed = Vector(0., 0.);
+	speed = 0.;
 	rotation = 0.;
 	time = 0.;
 	distance = 0.;
@@ -24,7 +24,8 @@ Car::Car(const Road& road)
 		Line(position, position + Vector(1., 1.), LASER_WIDTH, LASER_COLOR),
 	};
 
-	update_lasers(road);
+	if (road.state == LEARNING)
+		update_lasers(road);
 
 	alive = true;
 	finish = false;
@@ -54,17 +55,17 @@ void Car::operator=(const Car& car)
 void Car::update_corners()
 {
 	corners = {
-		position + Vector((-CAR_LENGTH / 2.) * cos(rotation) + (-CAR_WIDTH / 2.) * sin(rotation), (-CAR_LENGTH / 2.) * -sin(rotation) + (-CAR_WIDTH / 2.) * cos(rotation)),
-		position + Vector((-CAR_LENGTH / 2.) * cos(rotation) + ( CAR_WIDTH / 2.) * sin(rotation), (-CAR_LENGTH / 2.) * -sin(rotation) + ( CAR_WIDTH / 2.) * cos(rotation)),
-		position + Vector(( CAR_LENGTH / 2.) * cos(rotation) + (-CAR_WIDTH / 2.) * sin(rotation), ( CAR_LENGTH / 2.) * -sin(rotation) + (-CAR_WIDTH / 2.) * cos(rotation)),
-		position + Vector(( CAR_LENGTH / 2.) * cos(rotation) + ( CAR_WIDTH / 2.) * sin(rotation), ( CAR_LENGTH / 2.) * -sin(rotation) + ( CAR_WIDTH / 2.) * cos(rotation))
+		position + Vector((-CAR_LENGTH / 2.) * cos(-rotation) + (-CAR_WIDTH / 2.) * sin(-rotation), (-CAR_LENGTH / 2.) * -sin(-rotation) + (-CAR_WIDTH / 2.) * cos(-rotation)),
+		position + Vector((-CAR_LENGTH / 2.) * cos(-rotation) + ( CAR_WIDTH / 2.) * sin(-rotation), (-CAR_LENGTH / 2.) * -sin(-rotation) + ( CAR_WIDTH / 2.) * cos(-rotation)),
+		position + Vector(( CAR_LENGTH / 2.) * cos(-rotation) + (-CAR_WIDTH / 2.) * sin(-rotation), ( CAR_LENGTH / 2.) * -sin(-rotation) + (-CAR_WIDTH / 2.) * cos(-rotation)),
+		position + Vector(( CAR_LENGTH / 2.) * cos(-rotation) + ( CAR_WIDTH / 2.) * sin(-rotation), ( CAR_LENGTH / 2.) * -sin(-rotation) + ( CAR_WIDTH / 2.) * cos(-rotation))
 	};
 }
 
 void Car::update_sprite()
 {
 	sprite.setPosition(to_vector2f(position));
-	sprite.setRotation(rotation * (180. / PI));
+	sprite.setRotation(to_deg(rotation));
 }
 
 void Car::update_lasers(const Road& road)
@@ -95,6 +96,7 @@ void Car::update_lasers(const Road& road)
 				min_laser_end = laser_end;
 		}
 
+		lasers_sprites[i].set_point1(position);
 		lasers_sprites[i].set_point2(min_laser_end);
 	}
 }
@@ -159,26 +161,33 @@ std::vector<double> Car::look()
 std::vector<double> Car::think(const std::vector<double>& view)
 {
 	brain.update_outputs(view);
+
+	return brain.get_outputs();
 }
 
 void Car::move(const std::vector<double>& thought)
 {
-	speed.set_norm(speed.get_norm() + brain.get_output(0) * MAX_BOOST);
-	speed.set_norm(speed.get_norm() > MAX_SPEED ? MAX_SPEED : speed.get_norm());
+	speed += ((thought[0] * 2) - 1) * MAX_BOOST * TIME_STEP;
 
-	rotation += brain.get_output(1) * TURN_RADIUS;
-	speed.set_angle(speed.get_angle() + brain.get_output(1) * TURN_RADIUS);
+	if (speed > MAX_SPEED)
+		speed = MAX_SPEED;
+
+	if (speed < 0.)
+		speed = 0.;
+
+	rotation += ((thought[1] * 2) - 1) * TURN_RADIUS * TIME_STEP;
+
+	position += Vector_polar(speed * TIME_STEP, rotation);
 }
 
 void Car::update(const Road& road)
 {
-	if (alive && !finish)
+	if (alive && !finish && road.state == LEARNING)
 	{
 		move(think(look()));
 
-		position += speed * TIME_STEP;
 		time += TIME_STEP;
-		distance += speed.get_norm() * TIME_STEP;
+		distance += speed * TIME_STEP;
 
 		update_corners();
 		update_lasers(road);
@@ -199,4 +208,23 @@ void Car::recreate_from(const Car& car)
 	*this = car;
 
 	brain.mutate(score);
+}
+
+void Car::draw(sf::RenderWindow& window)
+{
+	for (auto& laser_sprite : lasers_sprites)
+		laser_sprite.draw(window);
+
+	window.draw(sprite);
+
+	sf::CircleShape c;
+	c.setFillColor(sf::Color::Green);
+	c.setRadius(6);
+	c.setOrigin(6, 6);
+	
+	for (auto& corner : corners)
+	{
+		c.setPosition(corner.x, corner.y);
+		window.draw(c);
+	}
 }

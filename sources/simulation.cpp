@@ -5,7 +5,9 @@ Simulation::Simulation(sf::RenderWindow& window, int car_amount, int road_amount
 	(void)road_amount;
 	// Une seule route à dessiner pour le moment
 	roads.push_back(Road(window));
-	cars.assign(car_amount, Car(roads[0]));
+
+	for (int i = 0; i < car_amount; i++)
+		cars.push_back(Car(roads[0]));
 }
 
 void Simulation::update(sf::RenderWindow& window)
@@ -18,8 +20,8 @@ void Simulation::update(sf::RenderWindow& window)
 
 void Simulation::draw(sf::RenderWindow& window)
 {
+	for (auto& c : cars)
+		c.draw(window);
 	for (auto& r : roads)
 		r.draw(window);
-	/*for (auto& c : cars)
-		c.draw(window, );*/
 }

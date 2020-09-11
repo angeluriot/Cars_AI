@@ -8,7 +8,7 @@ class Car
 
 		Network brain;
 		Vector position;
-		Vector speed;
+		double speed;
 		double rotation;
 		double time;
 		double distance;
@@ -35,6 +35,7 @@ class Car
 		void update(const Road& road);
 		double get_score();
 		void recreate_from(const Car& car);
+		void draw(sf::RenderWindow& window);
 };
 
 #endif
