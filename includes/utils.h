@@ -37,11 +37,11 @@ extern int screen_width;
 #define CAR_COLOR sf::Color(50, 50, 200)
 #define DEAD_CAR_COLOR sf::Color(150, 150, 255)
 #define MAX_SPEED 50.
-#define MAX_ROTATION 1.
+#define MAX_ROTATION 3.
 
 #define LASER_WIDTH 3
 #define LASER_COLOR sf::Color(255, 150, 150)
-#define LASER_MAX (CAR_LENGTH * 50.)
+#define LASER_MAX 100000.
 #define VIEW_MAX (CAR_LENGTH * 5.)
 
 #define NETWORK_STRUCTURE { 5, 4, 3, 2 }

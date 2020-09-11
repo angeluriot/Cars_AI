@@ -87,14 +87,14 @@ void Car::update_lasers()
 
 		for (int k = 0; k < road->wall_points.size(); k++)
 		{
-			if (intersection(position, position + lasers[i], road->start[k], road->wall_points[k][0], laser_end) && laser_end.get_norm() < min_laser_end.get_norm())
+			if (intersection(position, position + lasers[i], road->start[k], road->wall_points[k][0], laser_end) && get_distance(position, laser_end) < get_distance(position, min_laser_end))
 				min_laser_end = laser_end;
 
 			for (int j = 0; j < road->wall_points[k].size() - 1; j++)
-				if (intersection(position, position + lasers[i], road->wall_points[k][j], road->wall_points[k][j + 1], laser_end) && laser_end.get_norm() < min_laser_end.get_norm())
+				if (intersection(position, position + lasers[i], road->wall_points[k][j], road->wall_points[k][j + 1], laser_end) && get_distance(position, laser_end) < get_distance(position, min_laser_end))
 					min_laser_end = laser_end;
 
-			if (intersection(position, position + lasers[i], road->wall_points[k].back(), road->finish[k], laser_end) && laser_end.get_norm() < min_laser_end.get_norm())
+			if (intersection(position, position + lasers[i], road->wall_points[k].back(), road->finish[k], laser_end) && get_distance(position, laser_end) < get_distance(position, min_laser_end))
 				min_laser_end = laser_end;
 		}
 
