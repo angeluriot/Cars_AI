@@ -29,34 +29,35 @@ extern int screen_width;
 #define START_POS { START_POINT_1, START_POINT_2};
 #define FINISH_POS { FINISH_POINT_1, FINISH_POINT_2 };
 #define FINISH_CURSOR_TRIGGER 100
+#define TIME_MIN 30.
+#define TIME_MAX 1000.
 
 #define CAR_LENGTH 80.
 #define CAR_WIDTH 40.
 #define CAR_COLOR sf::Color(50, 50, 200)
 #define DEAD_CAR_COLOR sf::Color(150, 150, 255)
-#define TURN_RADIUS 0.5
-#define MAX_BOOST 5.
 #define MAX_SPEED 50.
+#define MAX_ROTATION 1.
 
 #define LASER_WIDTH 3
 #define LASER_COLOR sf::Color(255, 150, 150)
-
-#define VIEW_MAX 500.
+#define LASER_MAX (CAR_LENGTH * 50.)
+#define VIEW_MAX (CAR_LENGTH * 5.)
 
 #define NETWORK_STRUCTURE { 5, 4, 3, 2 }
-#define NETWORK_POSITION_X ((1920. - 280.) * RESIZE)
-#define NETWORK_POSITION_Y ((1080. - 280.) * RESIZE)
-#define NETWORK_SIZE_X (200. * RESIZE)
-#define NETWORK_SIZE_Y (200. * RESIZE)
-#define NEURON_RADIUS (20. * RESIZE)
-#define LINE_MAX (20. * RESIZE)
+#define NETWORK_POSITION_X (2250. * RESIZE)
+#define NETWORK_POSITION_Y (-450. * RESIZE)
+#define NETWORK_SIZE_X (500. * RESIZE)
+#define NETWORK_SIZE_Y (300. * RESIZE)
+#define NEURON_RADIUS (30. * RESIZE)
+#define LINE_MAX (30. * RESIZE)
 
 double sigmoid(const double& number);
 double random_factor();
 double normalize(const double& number, const double& min, const double& max);
 sf::RectangleShape create_line(const double& position_1_x, const double& position_1_y, const double& position_2_x, const double& position_2_y);
 sf::CircleShape create_neuron(const double& position_x, const double& position_y);
-void draw_network(std::vector<std::vector<sf::CircleShape>>& neurons, std::vector<std::vector<sf::RectangleShape>>& lines, const std::vector<Car>& birds, int bird_shown);
+void draw_network(std::vector<std::vector<sf::CircleShape>>& neurons, std::vector<std::vector<sf::RectangleShape>>& lines, const std::vector<Car>& cars, int car_shown, sf::RenderWindow& window);
 double distanceSq(const sf::Vector2i& a, const sf::Vector2i& b);
 bool intersection(const Vector& point_1, const Vector& point_2, const Vector& point_3, const Vector& point_4, Vector& intersection);
 double distance_to_line(const Vector& point, const Vector& point_1, const Vector& point_2);

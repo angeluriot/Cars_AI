@@ -21,7 +21,7 @@ sf::CircleShape create_neuron(const double& position_x, const double& position_y
 {
 	sf::CircleShape neuron;
 
-	neuron.setFillColor(sf::Color::White);
+	neuron.setFillColor(sf::Color::Black);
 	neuron.setRadius(NEURON_RADIUS);
 	neuron.setOrigin(NEURON_RADIUS, NEURON_RADIUS);
 	neuron.setPosition(position_x, position_y);
@@ -34,7 +34,7 @@ sf::RectangleShape create_line(const double& position_1_x, const double& positio
 	sf::RectangleShape line;
 	double angle = atan2(position_2_y - position_1_y, position_2_x - position_1_x);
 
-	line.setFillColor(sf::Color::White);
+	line.setFillColor(sf::Color::Black);
 	line.setSize(sf::Vector2f((position_2_x - position_1_x) / cos(angle), LINE_MAX));
 	line.setOrigin(0., LINE_MAX / 2.);
 	line.setPosition(position_1_x, position_1_y);
@@ -43,7 +43,7 @@ sf::RectangleShape create_line(const double& position_1_x, const double& positio
 	return line;
 }
 
-void draw_network(std::vector<std::vector<sf::CircleShape>>& neurons, std::vector<std::vector<sf::RectangleShape>>& lines, const std::vector<Car>& cars, int car_shown)
+void draw_network(std::vector<std::vector<sf::CircleShape>>& neurons, std::vector<std::vector<sf::RectangleShape>>& lines, const std::vector<Car>& cars, int car_shown, sf::RenderWindow& window)
 {
 	for (int i = 1; i < cars[car_shown].brain.layers.size(); i++)
 	{
@@ -77,6 +77,14 @@ void draw_network(std::vector<std::vector<sf::CircleShape>>& neurons, std::vecto
 			}
 		}
 	}
+
+	for (auto& line : lines)
+		for (auto& l : line)
+			window.draw(l);
+
+	for (auto& neuron : neurons)
+		for (auto& n : neuron)
+			window.draw(n);
 }
 
 double distanceSq(const sf::Vector2i& a, const sf::Vector2i& b)

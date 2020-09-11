@@ -71,7 +71,7 @@ std::vector<double> Network::get_outputs() const
 {
 	std::vector<double> v;
 
-	for (const auto& out : layers.back())
+	for (auto& out : layers.back())
 		v.push_back(out.output);
 
 	return v;
@@ -84,7 +84,7 @@ double Network::get_output(int index) const
 
 void Network::mutate(const double& score)
 {
-	double level = 1. / (double)std::pow(score * 10. + 1., 2);
+	double level = 1. / (double)std::pow(score * 50. + 1., 2);
 
 	for (int i = 1; i < layers.size(); i++)
 	{

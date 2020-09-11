@@ -73,17 +73,17 @@ void Car::update_sprite()
 void Car::update_lasers()
 {
 	lasers = {
-		Vector_polar(10000., rotation + PI / 2.),
-		Vector_polar(10000., rotation + PI / 4.),
-		Vector_polar(10000., rotation),
-		Vector_polar(10000., rotation - PI / 4.),
-		Vector_polar(10000., rotation - PI / 2.)
+		Vector_polar(LASER_MAX, rotation + PI / 2.),
+		Vector_polar(LASER_MAX, rotation + PI / 4.),
+		Vector_polar(LASER_MAX, rotation),
+		Vector_polar(LASER_MAX, rotation - PI / 4.),
+		Vector_polar(LASER_MAX, rotation - PI / 2.)
 	};
 
 	for (int i = 0; i < lasers.size(); i++)
 	{
 		Vector laser_end;
-		Vector min_laser_end = lasers[i];
+		Vector min_laser_end = position + lasers[i];
 
 		for (int k = 0; k < road->wall_points.size(); k++)
 		{
@@ -138,6 +138,19 @@ void Car::update_alive()
 
 	if (!alive)
 		sprite.setFillColor(DEAD_CAR_COLOR);
+
+	if (time > TIME_MIN)
+	{
+		for (auto& corner : corners)
+		{
+			if (corner.x < road->start[0].x)
+			{
+				alive = false;
+				sprite.setFillColor(DEAD_CAR_COLOR);
+				break;
+			}
+		}
+	}
 }
 
 void Car::update_finish()
@@ -158,7 +171,7 @@ std::vector<double> Car::look()
 	std::vector<double> view;
 
 	for (int i = 0; i < lasers_sprites.size(); i++)
-		view.push_back(normalize(lasers_sprites[i].get_length(), 0, VIEW_MAX));
+		view.push_back(normalize(lasers_sprites[i].get_length(), CAR_WIDTH, VIEW_MAX));
 
 	return view;
 }
@@ -172,15 +185,8 @@ std::vector<double> Car::think(const std::vector<double>& view)
 
 void Car::move(const std::vector<double>& thought)
 {
-	speed += ((thought[0] * 2) - 1) * MAX_BOOST * TIME_STEP;
-
-	if (speed > MAX_SPEED)
-		speed = MAX_SPEED;
-
-	if (speed < 0.)
-		speed = 0.;
-
-	rotation += ((thought[1] * 2) - 1) * TURN_RADIUS * TIME_STEP;
+	speed = thought[0] * MAX_SPEED;
+	rotation += ((thought[1] * 2) - 1.) * MAX_ROTATION * TIME_STEP;
 
 	position += Vector_polar(speed * TIME_STEP, rotation);
 }
@@ -197,6 +203,9 @@ void Car::update()
 		update_corners();
 		update_lasers();
 		update_sprite();
+
+		sprite.setFillColor(CAR_COLOR);
+
 		update_alive();
 		update_finish();
 	}
@@ -209,7 +218,7 @@ double Car::get_score()
 	#define START (road->start[0] + ((road->start[1] - road->start[0]) / 2.))
 	#define FINISH (road->finish[0] + ((road->finish[1] - road->finish[0]) / 2.))
 
-	return (finish ? normalize(time, 0., 30.) / 2. + 0.5 : normalize(get_distance(START, FINISH) - get_distance(position, FINISH), -300., get_distance(START, FINISH)) / 2.);
+	return (finish ? normalize(time, TIME_MIN, TIME_MAX) / 2. + 0.5 : normalize(get_distance(START, FINISH) - get_distance(position, FINISH), 0., get_distance(START, FINISH)) / 2.);
 }
 
 void Car::recreate()
@@ -226,21 +235,14 @@ void Car::recreate_from(const Car& car)
 	brain.mutate(score);
 }
 
-void Car::draw(sf::RenderWindow& window)
+void Car::draw_car(sf::RenderWindow& window)
 {
-	for (auto& laser_sprite : lasers_sprites)
-		laser_sprite.draw(window);
-
 	window.draw(sprite);
+}
 
-	sf::CircleShape c;
-	c.setFillColor(sf::Color::Green);
-	c.setRadius(6);
-	c.setOrigin(6, 6);
-	
-	for (auto& corner : corners)
-	{
-		c.setPosition(corner.x, corner.y);
-		window.draw(c);
-	}
+void Car::draw_lasers(sf::RenderWindow& window)
+{
+	if (alive)
+		for (auto& laser_sprite : lasers_sprites)
+			laser_sprite.draw(window);
 }

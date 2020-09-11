@@ -37,7 +37,8 @@ class Car
 		double get_score();
 		void recreate();
 		void recreate_from(const Car& car);
-		void draw(sf::RenderWindow& window);
+		void draw_car(sf::RenderWindow& window);
+		void draw_lasers(sf::RenderWindow& window);
 };
 
 #endif
