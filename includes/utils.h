@@ -30,17 +30,13 @@ extern int screen_width;
 #define FINISH_POS { FINISH_POINT_1, FINISH_POINT_2 };
 #define FINISH_CURSOR_TRIGGER 100
 
-#define SPAWN_AREA ((Vector(START_POINT_2) - Vector(START_POINT_1)) / 2.)
-#define SPAWN_POSITION (Vector(START_POINT_1) + SPAWN_AREA)
-
 #define CAR_LENGTH 80.
 #define CAR_WIDTH 40.
 #define CAR_COLOR sf::Color(50, 50, 200)
 #define DEAD_CAR_COLOR sf::Color(150, 150, 255)
-#define TURN_RADIUS 0.05
-#define MAX_BOOST 3.
+#define TURN_RADIUS 0.5
+#define MAX_BOOST 5.
 #define MAX_SPEED 50.
-#define MAX_MOVE 1.
 
 #define LASER_WIDTH 3
 #define LASER_COLOR sf::Color(255, 150, 150)
@@ -63,7 +59,7 @@ sf::CircleShape create_neuron(const double& position_x, const double& position_y
 void draw_network(std::vector<std::vector<sf::CircleShape>>& neurons, std::vector<std::vector<sf::RectangleShape>>& lines, const std::vector<Car>& birds, int bird_shown);
 double distanceSq(const sf::Vector2i& a, const sf::Vector2i& b);
 bool intersection(const Vector& point_1, const Vector& point_2, const Vector& point_3, const Vector& point_4, Vector& intersection);
-bool distance_to_line(const Vector& point, const Vector& point_1, const Vector& point_2);
+double distance_to_line(const Vector& point, const Vector& point_1, const Vector& point_2);
 double to_deg(const double& angle);
 double to_rad(const double& angle);
 

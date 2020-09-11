@@ -29,7 +29,7 @@ void start_loop(sf::RenderWindow& window)
 			}
 		}
 
-		if (clock_update.getElapsedTime() > sf::milliseconds(5. * !keyboard.isKeyPressed(sf::Keyboard::Space)))
+		if (clock_update.getElapsedTime() > sf::milliseconds(5. * keyboard.isKeyPressed(sf::Keyboard::Space)))
 		{
 			simulation.update(window);
 			clock_update.restart();
@@ -42,6 +42,9 @@ void start_loop(sf::RenderWindow& window)
 			window.display();
 			clock_draw.restart();
 		}
+
+		if (simulation.is_finish())
+			simulation.restart();
 	}
 }
 

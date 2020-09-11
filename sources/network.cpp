@@ -84,7 +84,7 @@ double Network::get_output(int index) const
 
 void Network::mutate(const double& score)
 {
-	double level = 1. / (double)std::pow(score + 1., 2);
+	double level = 1. / (double)std::pow(score * 10. + 1., 2);
 
 	for (int i = 1; i < layers.size(); i++)
 	{

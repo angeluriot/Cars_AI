@@ -6,6 +6,7 @@ class Car
 {
 	public :
 
+		Road* road;
 		Network brain;
 		Vector position;
 		double speed;
@@ -19,21 +20,22 @@ class Car
 		bool alive;
 		bool finish;
 
-		Car(const Road& road);
+		Car(Road& road);
 		Car(const Car& car);
 
 		void operator=(const Car& car);
 
 		void update_corners();
 		void update_sprite();
-		void update_lasers(const Road& road);
-		void update_alive(const Road& road);
-		void update_finish(const Road& road);
+		void update_lasers();
+		void update_alive();
+		void update_finish();
 		std::vector<double> look();
 		std::vector<double> think(const std::vector<double>& view);
 		void move(const std::vector<double>& thought);
-		void update(const Road& road);
+		void update();
 		double get_score();
+		void recreate();
 		void recreate_from(const Car& car);
 		void draw(sf::RenderWindow& window);
 };

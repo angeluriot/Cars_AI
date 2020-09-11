@@ -1,9 +1,10 @@
 #include "utils.h"
 
-Car::Car(const Road& road)
+Car::Car(Road& road)
 {
+	this->road = &road;
 	brain = Network(NETWORK_STRUCTURE);
-	position = Vector(SPAWN_POSITION + random_factor() * SPAWN_AREA);
+	position = Vector(road.start[0].x, road.start[0].y + ((road.start[1].y - road.start[0].y) / 2.) + random_factor() * ((road.start[1].y - road.start[0].y) / 4.));
 	speed = 0.;
 	rotation = 0.;
 	time = 0.;
@@ -25,7 +26,7 @@ Car::Car(const Road& road)
 	};
 
 	if (road.state == LEARNING)
-		update_lasers(road);
+		update_lasers();
 
 	alive = true;
 	finish = false;
@@ -38,6 +39,7 @@ Car::Car(const Car& car)
 
 void Car::operator=(const Car& car)
 {
+	road = car.road;
 	brain = car.brain;
 	position = car.position;
 	speed = car.speed;
@@ -68,7 +70,7 @@ void Car::update_sprite()
 	sprite.setRotation(to_deg(rotation));
 }
 
-void Car::update_lasers(const Road& road)
+void Car::update_lasers()
 {
 	lasers = {
 		Vector_polar(10000., rotation + PI / 2.),
@@ -83,16 +85,16 @@ void Car::update_lasers(const Road& road)
 		Vector laser_end;
 		Vector min_laser_end = lasers[i];
 
-		for (int k = 0; k < road.wall_points.size(); k++)
+		for (int k = 0; k < road->wall_points.size(); k++)
 		{
-			if (intersection(position, position + lasers[i], road.start[k], road.wall_points[k][0], laser_end) && laser_end.get_norm() < min_laser_end.get_norm())
+			if (intersection(position, position + lasers[i], road->start[k], road->wall_points[k][0], laser_end) && laser_end.get_norm() < min_laser_end.get_norm())
 				min_laser_end = laser_end;
 
-			for (int j = 0; j < road.wall_points[k].size() - 1; j++)
-				if (intersection(position, position + lasers[i], road.wall_points[k][j], road.wall_points[k][j + 1], laser_end) && laser_end.get_norm() < min_laser_end.get_norm())
+			for (int j = 0; j < road->wall_points[k].size() - 1; j++)
+				if (intersection(position, position + lasers[i], road->wall_points[k][j], road->wall_points[k][j + 1], laser_end) && laser_end.get_norm() < min_laser_end.get_norm())
 					min_laser_end = laser_end;
 
-			if (intersection(position, position + lasers[i], road.wall_points[k].back(), road.finish[k], laser_end) && laser_end.get_norm() < min_laser_end.get_norm())
+			if (intersection(position, position + lasers[i], road->wall_points[k].back(), road->finish[k], laser_end) && laser_end.get_norm() < min_laser_end.get_norm())
 				min_laser_end = laser_end;
 		}
 
@@ -101,20 +103,20 @@ void Car::update_lasers(const Road& road)
 	}
 }
 
-void Car::update_alive(const Road& road)
+void Car::update_alive()
 {
 	for (auto& corner : corners)
 	{
-		for (int k = 0; k < road.wall_points.size(); k++)
+		for (int k = 0; k < road->wall_points.size(); k++)
 		{
-			if (distance_to_line(corner, road.start[k], road.wall_points[k][0]) < MAX_MOVE)
+			if (distance_to_line(corner, road->start[k], road->wall_points[k][0]) < speed * TIME_STEP)
 			{
-				finish = true;
+				alive = false;
 				break;
 			}
 
-			for (int j = 0; j < road.wall_points[k].size() - 1; j++)
-				if (distance_to_line(corner, road.wall_points[k][j], road.wall_points[k][j + 1]) < MAX_MOVE)
+			for (int j = 0; j < road->wall_points[k].size() - 1; j++)
+				if (distance_to_line(corner, road->wall_points[k][j], road->wall_points[k][j + 1]) < speed * TIME_STEP)
 				{
 					alive = false;
 					break;
@@ -123,7 +125,7 @@ void Car::update_alive(const Road& road)
 			if (!alive)
 				break;
 
-			if (distance_to_line(corner, road.wall_points[k].back(), road.finish[k]) < MAX_MOVE)
+			if (distance_to_line(corner, road->wall_points[k].back(), road->finish[k]) < speed * TIME_STEP)
 			{
 				alive = false;
 				break;
@@ -138,14 +140,17 @@ void Car::update_alive(const Road& road)
 		sprite.setFillColor(DEAD_CAR_COLOR);
 }
 
-void Car::update_finish(const Road& road)
+void Car::update_finish()
 {
 	for (auto& corner : corners)
-		if (distance_to_line(corner, road.finish[0], road.finish[1]) < MAX_MOVE)
+		if (distance_to_line(corner, road->finish[0], road->finish[1]) < speed * TIME_STEP)
 		{
 			finish = true;
 			break;
 		}
+
+	if (finish)
+		sprite.setFillColor(sf::Color::Red);
 }
 
 std::vector<double> Car::look()
@@ -180,9 +185,9 @@ void Car::move(const std::vector<double>& thought)
 	position += Vector_polar(speed * TIME_STEP, rotation);
 }
 
-void Car::update(const Road& road)
+void Car::update()
 {
-	if (alive && !finish && road.state == LEARNING)
+	if (alive && !finish && road->state == LEARNING)
 	{
 		move(think(look()));
 
@@ -190,23 +195,34 @@ void Car::update(const Road& road)
 		distance += speed * TIME_STEP;
 
 		update_corners();
-		update_lasers(road);
+		update_lasers();
 		update_sprite();
-		update_alive(road);
-		update_finish(road);
+		update_alive();
+		update_finish();
 	}
 }
 
 double Car::get_score()
 {
-	return (finish ? normalize(time, 0., 30.) / 2. + 0.5 : normalize(distance, 0., 2000.) / 2.);
+	//return (finish ? normalize(time, 0., 30.) / 2. + 0.5 : normalize(distance, 0., 2000.) / 2.);
+
+	#define START (road->start[0] + ((road->start[1] - road->start[0]) / 2.))
+	#define FINISH (road->finish[0] + ((road->finish[1] - road->finish[0]) / 2.))
+
+	return (finish ? normalize(time, 0., 30.) / 2. + 0.5 : normalize(get_distance(START, FINISH) - get_distance(position, FINISH), -300., get_distance(START, FINISH)) / 2.);
+}
+
+void Car::recreate()
+{
+	Network temp = brain;
+	*this = Car(*road);
+	brain = temp;
 }
 
 void Car::recreate_from(const Car& car)
 {
 	double score = get_score();
-	*this = car;
-
+	brain = car.brain;
 	brain.mutate(score);
 }
 
