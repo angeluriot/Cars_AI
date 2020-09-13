@@ -57,14 +57,45 @@ bool Road::parse_points(std::ifstream& file)
 	return true;
 }
 
+bool Road::mouse_cross_line(sf::RenderWindow& window)
+{
+	Vector back = Vector(wall_points[this->wall].empty() ? start[this->wall] : wall_points[this->wall].back());
+	Vector mouse = Vector(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
+	Vector dummy;
+
+	if (sf::Mouse::getPosition(window).x > window.getSize().x || sf::Mouse::getPosition(window).y > window.getSize().y || sf::Mouse::getPosition(window).x < 0 || sf::Mouse::getPosition(window).y < 0)
+		return true;
+	for (int i = 0; i < 2; i++)
+	{
+		sf::Vector2f s = start[i];
+		for (auto& wall : wall_points[i])
+		{
+			if (wall != back && intersection(Vector(s), Vector(wall), back, mouse, dummy))
+				return true;
+			s = wall;
+		}
+	}
+	Vector back_wall0 = Vector(wall_points[0].empty() ? start[0] : wall_points[0].back());
+	if (this->wall == 1 && intersection(Vector(finish[0]), back_wall0, back, mouse, dummy) && distanceSq(mouse, finish[this->wall]) >= FINISH_CURSOR_TRIGGER)
+		return true;
+	if (intersection(Vector(start[0]), Vector(start[1]), back, mouse, dummy))
+		return true;
+	if (intersection(Vector(finish[0]), Vector(finish[1]), back, mouse, dummy))
+		return true;
+	return false;
+}
+
 void Road::update_drawing(sf::RenderWindow& window)
 {
 	static bool pressed = true;
 	sf::Mouse mouse;
+	sf::Vector2f mousePos = window.mapPixelToCoords(mouse.getPosition(window));
 
 	if (!pressed && mouse.isButtonPressed(sf::Mouse::Left))
 	{
 		pressed = true;
+		if (mouse_cross_line(window))
+			return ;
 		if (distanceSq(mouse.getPosition(window), window.mapCoordsToPixel(finish[wall])) < FINISH_CURSOR_TRIGGER)
 			wall++;
 		else
@@ -117,12 +148,14 @@ void Road::draw(sf::RenderWindow& window)
 	if (this->state == DRAWING && !wall_points[this->wall].empty())
 	{
 		mouseCoords = distanceSq(sf::Mouse::getPosition(window), window.mapCoordsToPixel(finish[this->wall])) < FINISH_CURSOR_TRIGGER ? finish[this->wall] : mouseCoords;
-		Line(wall_points[this->wall].back(), mouseCoords, 5, sf::Color(230, 230, 230)).draw(window);
+		sf::Color color = !mouse_cross_line(window) ? sf::Color(230, 230, 230) : sf::Color(255, 180, 180);
+		Line(wall_points[this->wall].back(), mouseCoords, 5, color).draw(window);
 	}
 	else if (this->state == DRAWING)
 	{
 		mouseCoords = distanceSq(sf::Mouse::getPosition(window), window.mapCoordsToPixel(finish[this->wall])) < FINISH_CURSOR_TRIGGER ? finish[this->wall] : mouseCoords;
-		Line(start[this->wall], mouseCoords, 5, sf::Color(230, 230, 230)).draw(window);
+		sf::Color color = !mouse_cross_line(window) ? sf::Color(230, 230, 230) : sf::Color(255, 180, 180);
+		Line(start[this->wall], mouseCoords, 5, color).draw(window);
 	}
 
 	// Lignes de départ et d'arrivée

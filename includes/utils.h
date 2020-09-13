@@ -59,6 +59,7 @@ sf::RectangleShape create_line(const double& position_1_x, const double& positio
 sf::CircleShape create_neuron(const double& position_x, const double& position_y);
 void draw_network(std::vector<std::vector<sf::CircleShape>>& neurons, std::vector<std::vector<sf::RectangleShape>>& lines, const std::vector<Car>& cars, int car_shown, sf::RenderWindow& window);
 double distanceSq(const sf::Vector2i& a, const sf::Vector2i& b);
+double distanceSq(const Vector& a, const Vector& b);
 bool intersection(const Vector& point_1, const Vector& point_2, const Vector& point_3, const Vector& point_4, Vector& intersection);
 double distance_to_line(const Vector& point, const Vector& point_1, const Vector& point_2);
 double to_deg(const double& angle);

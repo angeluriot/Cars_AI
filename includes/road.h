@@ -38,6 +38,7 @@ class Road
 
 		void update_drawing(sf::RenderWindow& window);
 		void update_learning(sf::RenderWindow& window);
+		bool mouse_cross_line(sf::RenderWindow& window);
 };
 
 #endif

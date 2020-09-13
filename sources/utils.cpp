@@ -94,6 +94,13 @@ double distanceSq(const sf::Vector2i& a, const sf::Vector2i& b)
 	return (distX * distX + distY * distY);
 }
 
+double distanceSq(const Vector& a, const Vector& b)
+{
+	double distX = a.x - b.x;
+	double distY = a.y - b.y;
+	return (distX * distX + distY * distY);
+}
+
 bool intersection(const Vector& point_1, const Vector& point_2, const Vector& point_3, const Vector& point_4, Vector& intersection)
 {
 	if (point_1 == point_2 || point_3 == point_4)

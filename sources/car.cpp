@@ -242,7 +242,7 @@ void Car::draw_car(sf::RenderWindow& window)
 
 void Car::draw_lasers(sf::RenderWindow& window)
 {
-	if (alive)
+	if (alive && !finish)
 		for (auto& laser_sprite : lasers_sprites)
 			laser_sprite.draw(window);
 }
