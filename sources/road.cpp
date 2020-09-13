@@ -12,10 +12,11 @@ Road::Road(sf::RenderWindow& window, int nb_cars, std::string filename)
 	this->finish = { window.mapPixelToCoords(FINISH_POINT_1), window.mapPixelToCoords(FINISH_POINT_2) };
 
 	std::ifstream file;
-	file.open(filename);
+	if(file.open(filename)){
+		return;
+	}
 
-	if (!file)
-		return ;
+	
 
 	this->state = LEARNING;
 	this->wall = 2;
