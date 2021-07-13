@@ -37,7 +37,7 @@ A neural network learning to control a car on a racetrack without crashing.
 * Once the road is drawn, the neural network will train on it using a genetic algorithm (that's why there are several cars) :
 
 <p align="center">
-	<img src="https://i.imgur.com/ZoZAiqY.png" width="510">
+	<img src="https://i.imgur.com/ZoZAiqY.png" width="500">
 </p>
 
 <br/>
